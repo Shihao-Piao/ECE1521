@@ -71,3 +71,7 @@ if __name__ == '__main__':
         plt.title(label[i])
 
     plt.show()
+
+
+    cv2.imwrite('noisy_lena.png',noisy_img)
+    cv2.imwrite('wiener_filtered.png',filtered_img)
