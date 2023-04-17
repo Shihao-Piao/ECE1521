@@ -89,5 +89,5 @@ plt.show()
 
 '''
 import cv2
-img = cv2.imread('lena.png',0)
-print(img)
+img = cv2.imread('lena.png')
+print(img.shape)
