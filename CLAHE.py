@@ -17,14 +17,14 @@ def calc_histogram(gray_arr, level=256):
     return hists
 
 
-def calc_histogram_cdf_(hists, block_m, block_n, level=256):
+def calc_histogram_cdf(hists, block_m, block_n, level=256):
     hists_cumsum = np.cumsum(np.array(hists))
     const_a = (level - 1) / (block_m * block_n)
     hists_cdf = (const_a * hists_cumsum).astype("uint8")
     return hists_cdf
 
 
-def clip_histogram_(hists, threshold=10.0):
+def clip_histogram(hists, threshold=10.0):
     all_sum = sum(hists)
     threshold_value = all_sum / len(hists) * threshold
     total_extra = sum([h - threshold_value for h in hists if h >= threshold_value])
