@@ -1,6 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import cv2
+import metric
 
 
 def readimage(string):
@@ -53,7 +54,86 @@ def clahe(img_path, blocks=8, level=256, threshold=10.0):
     block_m = int(m / blocks)
     block_n = int(n / blocks)
 
+    # split small regions and calculate the CDF for each, save to a 2-dim list
+    maps = []
+    for i in range(blocks):
+        row_maps = []
+        for j in range(blocks):
+            # block border
+            si, ei = i * block_m, (i + 1) * block_m
+            sj, ej = j * block_n, (j + 1) * block_n
+
+            # block image array
+            block_img_arr = img[si: ei, sj: ej]
+
+            # calculate histogram and cdf
+            hists = calc_histogram(block_img_arr)
+            clip_hists = clip_histogram(hists, threshold=threshold)  # clip histogram
+            hists_cdf = calc_histogram_cdf(clip_hists, block_m, block_n, level)
+
+            # save
+            row_maps.append(hists_cdf)
+        maps.append(row_maps)
+    # interpolate every pixel using four nearest mapping functions
+    # pay attention to border case
+    arr = img.copy()
+    for i in range(m):
+        for j in range(n):
+            r = int((i - block_m / 2) / block_m)  # the row index of the left-up mapping function
+            c = int((j - block_n / 2) / block_n)  # the col index of the left-up mapping function
+
+            x1 = (i - (r + 0.5) * block_m) / block_m  # the x-axis distance to the left-up mapping center
+            y1 = (j - (c + 0.5) * block_n) / block_n  # the y-axis distance to the left-up mapping center
+
+            lu = 0  # mapping value of the left up cdf
+            lb = 0  # left bottom
+            ru = 0  # right up
+            rb = 0  # right bottom
+
+            # four corners use the nearest mapping directly
+            if r < 0 and c < 0:
+                arr[i][j] = maps[r + 1][c + 1][img[i][j]]
+            elif r < 0 and c >= blocks - 1:
+                arr[i][j] = maps[r + 1][c][img[i][j]]
+            elif r >= blocks - 1 and c < 0:
+                arr[i][j] = maps[r][c + 1][img[i][j]]
+            elif r >= blocks - 1 and c >= blocks - 1:
+                arr[i][j] = maps[r][c][img[i][j]]
+            # four border case using the nearest two mapping : linear interpolate
+            elif r < 0 or r >= blocks - 1:
+                if r < 0:
+                    r = 0
+                elif r > blocks - 1:
+                    r = blocks - 1
+                left = maps[r][c][img[i][j]]
+                right = maps[r][c + 1][img[i][j]]
+                arr[i][j] = (1 - y1) * left + y1 * right
+            elif c < 0 or c >= blocks - 1:
+                if c < 0:
+                    c = 0
+                elif c > blocks - 1:
+                    c = blocks - 1
+                up = maps[r][c][img[i][j]]
+                bottom = maps[r + 1][c][img[i][j]]
+                arr[i][j] = (1 - x1) * up + x1 * bottom
+            # bilinear interpolate for inner pixels
+            else:
+                lu = maps[r][c][img[i][j]]
+                lb = maps[r + 1][c][img[i][j]]
+                ru = maps[r][c + 1][img[i][j]]
+                rb = maps[r + 1][c + 1][img[i][j]]
+                arr[i][j] = (1 - y1) * ((1 - x1) * lu + x1 * lb) + y1 * ((1 - x1) * ru + x1 * rb)
+    arr = arr.astype("uint8")
+    return arr
+
 
 if __name__ == '__main__':
     path = 'car.jpg'
+    img = cv2.imread(path,0)
     re = clahe(path)
+    cv2.imwrite('car_clahe.png',re)
+    plt.imshow(re,cmap='gray')
+    plt.show()
+
+    psnr = metric.calculate_psnr(path,'car_clahe.png')
+    print(psnr)
