@@ -89,5 +89,9 @@ plt.show()
 
 '''
 import cv2
-img = cv2.imread('lena.png')
+import numpy as np
+
+img = cv2.imread('image/lena.png')
 print(img.shape)
+a = [[1,2],[8,4],[5,6]]
+print(np.sum(a))

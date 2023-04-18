@@ -77,4 +77,7 @@ def retinex_MSRCR(img,sigmas=[12,80,250],s1=0.01,s2=0.01):
     return r.astype('uint8')
 
 if __name__ == '__main__':
-    path = 'image/'
+    path = 'image/medical.png'
+    img = cv2.imread(path)
+    re = retinex_MSRCR(img)
+    #cv2.imwrite('image/medical_msrcr.png',re)

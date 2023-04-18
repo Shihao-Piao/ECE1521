@@ -49,8 +49,51 @@ def calculate_entropy(img):
 
     return entropy
 
+def U(x,y):
+    if x>=y:
+        return 1
+    else:
+        return 0
+
+def xor(x,y):
+    if x==y:
+        return 0
+    else:
+        return 1
+
+def calculate_loe(img1,img2): #too slow use matlab
+    img1 = cv2.imread(img1)
+    img1 = cv2.resize(img1, (512, 512))
+    b1,g1,r1 = cv2.split(img1)
+
+    img2 = cv2.imread(img2)
+    img2 = cv2.resize(img2, (512, 512))
+    b2, g2, r2 = cv2.split(img2)
+
+    (n,m,c) = img1.shape
+    L = np.zeros((n,m))
+    Le = np.zeros((n, m))
+    for i in range (n):
+        for j in range(m):
+            L[i][j] = max(b1[i][j],g1[i][j],r1[i][j])
+            Le[i][j] = max(b2[i][j], g2[i][j], r2[i][j])
+
+    RD = np.zeros((n,m))
+
+    for x in range(n):
+        if x %10 == 0:
+            print(x)
+        for y in range(m):
+            tmp = 0
+            for i in range(n):
+                for j in range(m):
+                    tmp += xor(U(L[x][y],L[i][j]),U(Le[x][y],Le[i][j]))
+
+
+
 # Example usage
 if __name__ == '__main__':
+    '''
     img1_path = "lena.png" # Path to the first image
     img2_path = "WechatIMG9.png" # Path to the second image
 
@@ -74,3 +117,5 @@ if __name__ == '__main__':
         print("image2 has higher entropy.")
     else:
         print("Both images have the same entropy.")
+    '''
+
