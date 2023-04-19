@@ -5,7 +5,7 @@ import wiener
 import CLAHE
 import MSRCR
 import numpy as np
-'''
+
 #lena.png
 path = 'image/lena_noisy.png'
 img_origin = cv2.imread(path,0)
@@ -59,8 +59,8 @@ psnr_value = metric.calculate_psnr(path,'image/lena_msrcr.png')
 print("MSRCR PSNR value: {:.2f} dB".format(psnr_value))
 entropy2 = metric.calculate_entropy('image/lena_msrcr.png')
 print("Entropy of MSRCR image:", entropy2)
-'''
-'''
+
+
 #car.jpg
 path = 'image/car.jpg'
 img_origin = cv2.imread(path)
@@ -99,7 +99,7 @@ plt.title('MSRCR')
 plt.savefig('plot/car.png')
 plt.show()
 
-print('Car:')
+print('\nCar:')
 
 psnr_value = metric.calculate_psnr(path,'image/car_wiener_2.png')
 print("wiener filtered PSNR value: {:.2f} dB".format(psnr_value))
@@ -115,8 +115,8 @@ psnr_value = metric.calculate_psnr(path,'image/car_msrcr.png')
 print("MSRCR PSNR value: {:.2f} dB".format(psnr_value))
 entropy2 = metric.calculate_entropy('image/car_msrcr.png')
 print("Entropy of MSRCR image:", entropy2)
-'''
-'''
+
+
 #medical.png
 path = 'image/medical.png'
 img_origin = cv2.imread(path)
@@ -155,7 +155,7 @@ plt.title('MSRCR')
 plt.savefig('plot/medical.png')
 plt.show()
 
-print('Medical:')
+print('\nMedical:')
 
 psnr_value = metric.calculate_psnr(path,'image/medical_wiener_2.png')
 print("wiener filtered PSNR value: {:.2f} dB".format(psnr_value))
@@ -171,8 +171,8 @@ psnr_value = metric.calculate_psnr(path,'image/medical_msrcr.png')
 print("MSRCR PSNR value: {:.2f} dB".format(psnr_value))
 entropy2 = metric.calculate_entropy('image/medical_msrcr.png')
 print("Entropy of MSRCR image:", entropy2)
-'''
-'''
+
+
 #lowlight_1.png
 path = 'image/lowlight_1.png'
 img_origin = cv2.imread(path)
@@ -205,7 +205,7 @@ plt.title('MSRCR')
 plt.savefig('plot/lowlight_1.png')
 plt.show()
 
-print('Lowlight_1:')
+print('\nLowlight_1:')
 
 psnr_value = metric.calculate_psnr(path,'image/lowlight_1_clahe.png')
 print("CLAHE PSNR value: {:.2f} dB".format(psnr_value))
@@ -218,8 +218,8 @@ print("MSRCR PSNR value: {:.2f} dB".format(psnr_value))
 entropy2 = metric.calculate_entropy('image/lowlight_1_msrcr.png')
 print("Entropy of MSRCR image:", entropy2)
 print("LOE value of MSRCR: 425.4761")
-'''
-'''
+
+
 #lowlight_2.png
 path = 'image/lowlight_2.png'
 img_origin = cv2.imread(path)
@@ -252,7 +252,7 @@ plt.title('MSRCR')
 plt.savefig('plot/lowlight_2.png')
 plt.show()
 
-print('Lowlight_2:')
+print('\nLowlight_2:')
 
 psnr_value = metric.calculate_psnr(path,'image/lowlight_2_clahe.png')
 print("CLAHE PSNR value: {:.2f} dB".format(psnr_value))
@@ -265,7 +265,7 @@ print("MSRCR PSNR value: {:.2f} dB".format(psnr_value))
 entropy2 = metric.calculate_entropy('image/lowlight_2_msrcr.png')
 print("Entropy of MSRCR image:", entropy2)
 print("LOE value of MSRCR: 363.4579")
-'''
+
 #lowlight_3.png
 path = 'image/lowlight_3.png'
 img_origin = cv2.imread(path)
@@ -298,7 +298,7 @@ plt.title('MSRCR')
 plt.savefig('plot/lowlight_3.png')
 plt.show()
 
-print('Lowlight_3:')
+print('\nLowlight_3:')
 
 psnr_value = metric.calculate_psnr(path,'image/lowlight_3_clahe.png')
 print("CLAHE PSNR value: {:.2f} dB".format(psnr_value))
