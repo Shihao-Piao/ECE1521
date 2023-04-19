@@ -34,6 +34,7 @@ def calculate_entropy(img):
     """
     # Load the two images
     image = cv2.imread(img)
+    image = cv2.resize(image,(512,512))
 
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

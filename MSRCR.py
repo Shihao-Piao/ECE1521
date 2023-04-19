@@ -59,11 +59,13 @@ def MultiScaleRetinex(img,sigmas=[15,80,250],weights=None,flag=True):
         r=r.astype('uint8')
     return r
 
-def retinex_MSRCR(img,sigmas=[12,80,250],s1=0.01,s2=0.01):
+def retinex_MSRCR(img_path,sigmas=[12,80,250],s1=0.01,s2=0.01):
     '''r=βlog(αI')MSR, I'=I/∑I, I is one channel of image, ∑I is the sum of all channels,
        C:=βlog(αI') is named as color recovery factor. Last we improve previously used
        linear stretch: MSRCR:=r, r=G[MSRCR-b], then doing linear stretch. In practice, it
        doesn't work well, so we take another measure: Simplest Color Balance'''
+    img = cv2.imread(img_path)
+    img = cv2.resize(img,(512,512))
     alpha=125
     img=img.astype('double')+1 #
     csum_log=np.log(np.sum(img,axis=2))

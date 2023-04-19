@@ -24,7 +24,7 @@ def add_gaussian_noise(img, sigma):
     return noisy_img
 
 
-def wiener_filter(img_path, kernel_size = 5, K = 10):
+def wiener_filter(img_path, kernel_size = 9, K = 10):
     img = readimage(img_path)
     kernel = gaussian_kernel(kernel_size)
     kernel /= np.sum(kernel)
@@ -49,31 +49,14 @@ def rgb2gray(rgb):
 
 
 if __name__ == '__main__':
-    # Load image and convert it to gray scale
-    img = readimage('lena.png')
-
-    # Blur the image
-    blurred_img = blur(img, kernel_size=7)
-
-    # Add Gaussian noise
-    noisy_img = add_gaussian_noise(blurred_img, sigma=30)
-
-    # Apply Wiener Filter
-    kernel = gaussian_kernel(5)
-    filtered_img = wiener_filter(noisy_img, kernel, K=10)
-    # Display results
-    display = [img, blurred_img, noisy_img, filtered_img]
-    label = ['Original Image', 'Motion Blurred Image', 'Motion Blurring + Gaussian Noise', 'Wiener Filter applied']
-
-    fig = plt.figure(figsize=(12, 10))
-
-    for i in range(len(display)):
-        fig.add_subplot(2, 2, i + 1)
-        plt.imshow(display[i], cmap='gray')
-        plt.title(label[i])
-
+    path = 'image/lena_noisy.png'
+    img = cv2.imread(path,0)
+    plt.imshow(img,cmap='gray')
     plt.show()
-
-
-    cv2.imwrite('noisy_lena.png',noisy_img)
-    cv2.imwrite('wiener_filtered.png',filtered_img)
+    re = wiener_filter(path)
+    print(re.astype('uint8'))
+    fig = plt.figure()
+    plt.imshow(re,cmap='gray')
+    plt.savefig('t.png')
+    plt.show()
+    #cv2.imwrite('t.png',re)
