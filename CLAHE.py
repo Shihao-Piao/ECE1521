@@ -2,10 +2,11 @@ import numpy as np
 from matplotlib import pyplot as plt
 import cv2
 import metric
+from PIL import Image
 
 
 def readimage(string):
-    image = cv2.imread(string, 0)
+    image = cv2.imread(string)
     imagefinal = cv2.resize(image, (512, 512))
     return imagefinal
 
@@ -47,9 +48,7 @@ def draw_histogram(hists):
     plt.show()
 
 
-def clahe(img_path, blocks=8, level=256, threshold=10.0):
-    img = readimage(img_path)
-    img = np.array(img)
+def CLAHE(img, blocks=8, level=256, threshold=10.0):
     (m, n) = img.shape
     block_m = int(m / blocks)
     block_n = int(n / blocks)
@@ -125,13 +124,29 @@ def clahe(img_path, blocks=8, level=256, threshold=10.0):
                 arr[i][j] = (1 - y1) * ((1 - x1) * lu + x1 * lb) + y1 * ((1 - x1) * ru + x1 * rb)
     arr = arr.astype("uint8")
     return arr
+def clahe(path):
+    img = readimage(path)
+    c = img.shape[2]
+
+    if c == 1:
+        re = CLAHE(img)
+        return re
+    elif c == 3 or c == 4:
+        rgb_arr = [None] * 3
+        rgb_img = [None] * 3
+
+        for k in range(c):
+            rgb_arr[k] = CLAHE(img[:,:,k])
+            rgb_img[k] = Image.fromarray(rgb_arr[k])
+        img_res = Image.merge("RGB", tuple(rgb_img))
+        return img_res
 
 
 if __name__ == '__main__':
-    path = 'car.jpg'
-    img = cv2.imread(path,0)
+    path = 'image/car.jpg'
     re = clahe(path)
-    cv2.imwrite('car_clahe.png',re)
+
+    cv2.imwrite('car_clahe.png',np.array(re))
     plt.imshow(re,cmap='gray')
     plt.show()
 

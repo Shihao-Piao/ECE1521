@@ -1,7 +1,12 @@
 import cv2
 import matplotlib.pyplot as plt
 import metric
+import wiener
+import CLAHE
+import MSRCR
+import numpy as np
 
+'''
 #wiener filter
 path1 = 'noisy_lena.png'
 path2 = 'wiener_filtered.png'
@@ -22,3 +27,6 @@ print("wiener filtered PSNR value: {:.2f} dB".format(psnr_value))
 
 entropy2 = metric.calculate_entropy(path2)
 print("Entropy of wiener filtered image:", entropy2)
+'''
+#lena.png
+path = 'image/lena_noisy.png'

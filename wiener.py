@@ -24,7 +24,9 @@ def add_gaussian_noise(img, sigma):
     return noisy_img
 
 
-def wiener_filter(img, kernel, K):
+def wiener_filter(img_path, kernel_size = 5, K = 10):
+    img = readimage(img_path)
+    kernel = gaussian_kernel(kernel_size)
     kernel /= np.sum(kernel)
     dummy = np.copy(img)
     dummy = fft2(dummy)
