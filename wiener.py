@@ -49,8 +49,8 @@ def rgb2gray(rgb):
 
 
 if __name__ == '__main__':
-    path = 'image/lena_noisy.png'
-    img = cv2.imread(path,0)
+    path = 'image/medical.png'
+    img = cv2.imread(path)
     plt.imshow(img,cmap='gray')
     plt.show()
     re = wiener_filter(path)
