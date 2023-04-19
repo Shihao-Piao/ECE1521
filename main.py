@@ -116,6 +116,7 @@ print("MSRCR PSNR value: {:.2f} dB".format(psnr_value))
 entropy2 = metric.calculate_entropy('image/car_msrcr.png')
 print("Entropy of MSRCR image:", entropy2)
 '''
+'''
 #medical.png
 path = 'image/medical.png'
 img_origin = cv2.imread(path)
@@ -170,3 +171,49 @@ psnr_value = metric.calculate_psnr(path,'image/medical_msrcr.png')
 print("MSRCR PSNR value: {:.2f} dB".format(psnr_value))
 entropy2 = metric.calculate_entropy('image/medical_msrcr.png')
 print("Entropy of MSRCR image:", entropy2)
+'''
+#lowlight_1.png
+path = 'image/lowlight_1.png'
+img_origin = cv2.imread(path)
+img_origin = cv2.resize(img_origin,(512,512))
+img_origin = cv2.cvtColor(img_origin, cv2.COLOR_BGR2RGB)
+
+img_clahe = CLAHE.clahe(path)
+cv2.imwrite('image/lowlight_1_clahe.png',np.array(img_clahe))
+img_clahe = cv2.imread('image/lowlight_1_clahe.png')
+img_clahe = cv2.cvtColor(img_clahe, cv2.COLOR_BGR2RGB)
+
+img_msrcr = MSRCR.retinex_MSRCR(path)
+cv2.imwrite('image/lowlight_1_msrcr.png',np.array(img_msrcr))
+img_msrcr = cv2.imread('image/lowlight_1_msrcr.png')
+img_msrcr = cv2.cvtColor(img_msrcr, cv2.COLOR_BGR2RGB)
+
+fig = plt.figure()
+fig.add_subplot(1, 3, 1)
+plt.imshow(img_origin)
+plt.title('Original')
+
+fig.add_subplot(1, 3, 2)
+plt.imshow(img_clahe)
+plt.title('CLAHE')
+
+fig.add_subplot(1, 3, 3)
+plt.imshow(img_msrcr)
+plt.title('MSRCR')
+
+plt.savefig('plot/lowlight_1.png')
+plt.show()
+
+print('Lowlight_1:')
+
+psnr_value = metric.calculate_psnr(path,'image/lowlight_1_clahe.png')
+print("CLAHE PSNR value: {:.2f} dB".format(psnr_value))
+entropy2 = metric.calculate_entropy('image/lowlight_1_clahe.png')
+print("Entropy of CLAHE image:", entropy2)
+print("LOE value: ")
+
+psnr_value = metric.calculate_psnr(path,'image/lowlight_1_msrcr.png')
+print("MSRCR PSNR value: {:.2f} dB".format(psnr_value))
+entropy2 = metric.calculate_entropy('image/lowlight_1_msrcr.png')
+print("Entropy of MSRCR image:", entropy2)
+print("LOE value: ")
