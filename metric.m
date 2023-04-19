@@ -1,7 +1,7 @@
 clc, clear, close all
  
-I = imread('image/lowlight_1.png'); % original image
-Ie = imread('image/lowlight_1_msrcr.png'); % enhanced image
+I = imread('image/lowlight_3.png'); % original image
+Ie = imread('image/lowlight_3_clahe.png'); % enhanced image
  
 LOE = loe(I,Ie)
  
